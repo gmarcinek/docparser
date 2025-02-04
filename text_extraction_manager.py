@@ -1,5 +1,6 @@
 import json
 from abc import ABC, abstractmethod
+from simple_text_extraction_strategy import SimpleTextExtractionStrategy
 import fitz
 
 class TextExtractionStrategy(ABC):
@@ -21,21 +22,19 @@ class TextExtractionManager:
         self.json_path = json_path
         self.doc = fitz.open(pdf_path)
         self.strategies = []
+        self.register_strategy(SimpleTextExtractionStrategy())
 
     def register_strategy(self, strategy: TextExtractionStrategy):
         """Dodaje nową strategię do managera"""
         self.strategies.append(strategy)
 
     def process_rectangle(self, rectangle_data):
-        """
-        Przetwarza pojedynczy prostokąt używając odpowiedniej strategii
-        """
-        print(f"Processing rectangle ID: {rectangle_data['id']}")
-        
+        print(f"Available strategies: {len(self.strategies)}")  # Debug
         for strategy in self.strategies:
+            print(f"Trying strategy: {strategy.__class__.__name__}")  # Debug
             try:
                 if strategy.can_handle(rectangle_data, self.doc):
-                    print(f"Using strategy: {strategy.__class__.__name__}")
+                    print("Strategy can handle this rectangle")  # Debug
                     result = strategy.extract_text(rectangle_data, self.doc)
                     self.save_results(rectangle_data, result)
                     return True

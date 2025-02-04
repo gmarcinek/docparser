@@ -67,11 +67,10 @@ class RectangleProcessor:
         while not self.event_queue.empty():
             rect = self.event_queue.get()
             self.update_status(f"Processing rectangle ID {rect['id']}")
-            
-            # Try to extract text from the rectangle
             try:
-                self.extraction_manager.process_rectangle(rect)
-                self.update_status(f"Text extraction completed for rectangle ID {rect['id']}")
+                print("Starting text extraction for rectangle:", rect['id'])  # Debug
+                result = self.extraction_manager.process_rectangle(rect)
+                print("Text extraction result:", result)  # Debug
             except Exception as e:
                 self.update_status(f"Error processing rectangle ID {rect['id']}: {e}")
 

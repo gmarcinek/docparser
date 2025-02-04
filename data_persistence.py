@@ -1,6 +1,7 @@
 import json
 import os
 from datetime import datetime
+from PDFTextExtractor import PDFTextExtractor
 
 class DataManager:
     def __init__(self, project_dir="pdf_projects"):
@@ -10,7 +11,6 @@ class DataManager:
         os.makedirs(project_dir, exist_ok=True)
         
     def init_project(self, pdf_path):
-        """Initialize a new project based on PDF file"""
         pdf_name = os.path.basename(pdf_path)
         project_name = f"{os.path.splitext(pdf_name)[0]}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         project_path = os.path.join(self.project_dir, project_name)
@@ -25,12 +25,15 @@ class DataManager:
             'rectangles': []
         }
         
-        # Create project directory structure
         os.makedirs(project_path, exist_ok=True)
         os.makedirs(self.current_project['screenshots_dir'], exist_ok=True)
         os.makedirs(self.current_project['thumbnails_dir'], exist_ok=True)
         
-        # Initialize empty data file
+        # Tu dodajemy ekstrakcję
+        extractor = PDFTextExtractor(pdf_path)
+        extractor.output_dir = project_path
+        extractor.extract_full_text()
+        
         self.save_rectangle_data([])
         
         return self.current_project

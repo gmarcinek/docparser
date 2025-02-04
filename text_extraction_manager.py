@@ -22,7 +22,7 @@ class TextExtractionManager:
         self.json_path = json_path
         self.doc = fitz.open(pdf_path)
         self.strategies = []
-        self.register_strategy(SimpleTextExtractionStrategy())
+        self.register_strategy(SimpleTextExtractionStrategy(pdf_path))
 
     def register_strategy(self, strategy: TextExtractionStrategy):
         """Dodaje nową strategię do managera"""

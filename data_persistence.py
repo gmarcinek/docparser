@@ -1,7 +1,9 @@
 import json
 import os
 from datetime import datetime
-from PDFTextExtractor import PDFTextExtractor
+from extractors.pdf_text_extractor import PDFTextExtractor
+from extractors.pdf_table_extractor import PDFTableExtractor
+from extractors.pdf_rectangle_extractor import PDFRectangleExtractor
 
 class DataManager:
     def __init__(self, project_dir="pdf_projects"):
